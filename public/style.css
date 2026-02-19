@@ -1,8 +1,119 @@
+:root{
+  --bg:#0b0b0d;
+  --card:#111217;
+  --muted:#bfc3c8;
+  --accent:#ff6b6b;
+  --glass: rgba(255,255,255,0.04);
+  --glass-2: rgba(255,255,255,0.02);
+  --radius:14px;
+  --gap:18px;
+  --max-width:1200px;
+  --transition:300ms cubic-bezier(.2,.9,.3,1);
+  --shadow: 0 6px 20px rgba(2,6,23,0.6);
+}
 
-body{margin:0;font-family:sans-serif;background:#111;color:#fff;overflow-x:hidden}
-header{height:70vh;background-size:cover;background-position:center;transition:background 1s}
-section{padding:40px}
-#menu{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px}
-.card{background:#1e1e1e;padding:20px;border-radius:10px;transition:.3s}
-.card:hover{transform:translateY(-5px)}
-img{width:100%;border-radius:10px}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family:"Vazirmatn","Segoe UI",Tahoma,system-ui,-apple-system,Arial;
+  background:linear-gradient(180deg,#05050a 0%, #0b0b0d 100%);
+  color:#fff;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  line-height:1.45;
+  overflow-x:hidden;
+  padding-bottom:40px;
+}
+
+/* Layout */
+#app{max-width:var(--max-width);margin:0 auto;padding:20px}
+header#hero{
+  height:62vh;
+  min-height:320px;
+  border-radius:18px;
+  overflow:hidden;
+  position:relative;
+  background:linear-gradient(120deg, rgba(0,0,0,0.35), rgba(0,0,0,0.55));
+  display:flex;
+  align-items:flex-end;
+  justify-content:flex-start;
+  box-shadow:var(--shadow);
+  background-size:cover;
+  background-position:center;
+  transition:background-image var(--transition);
+}
+
+/* overlay and content */
+.hero-overlay{
+  width:100%;
+  height:100%;
+  display:flex;
+  align-items:flex-end;
+  justify-content:flex-start;
+  padding:28px;
+  background:linear-gradient(180deg, rgba(0,0,0,0) 30%, rgba(0,0,0,0.6) 100%);
+}
+.hero-content{max-width:900px}
+#siteTitle{margin:0;font-size:clamp(20px,4vw,40px);letter-spacing:0.6px}
+#aboutText{margin-top:8px;color:var(--muted);font-size:14px}
+
+/* hero controls */
+.hero-controls{position:absolute;left:18px;top:18px;display:flex;gap:8px}
+.icon-btn{
+  background:var(--glass);
+  border:1px solid rgba(255,255,255,0.04);
+  color:#fff;padding:8px 12px;border-radius:10px;cursor:pointer;
+  backdrop-filter: blur(6px);
+  transition:transform .18s ease,opacity .18s;
+}
+.icon-btn:active{transform:scale(.98)}
+
+/* Section */
+main{margin-top:26px}
+.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.section-header h2{margin:0;font-size:20px}
+.actions{display:flex;gap:10px}
+.btn{
+  background:linear-gradient(90deg,var(--accent),#ff8a8a);
+  border:none;padding:8px 14px;border-radius:10px;color:#111;font-weight:600;cursor:pointer;
+  box-shadow:0 6px 18px rgba(255,107,107,0.12);
+}
+#statusBar{margin-bottom:12px;color:var(--muted);font-size:14px}
+
+/* Grid and cards */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:var(--gap)}
+.card{
+  background:linear-gradient(180deg,var(--card), rgba(255,255,255,0.02));
+  border-radius:12px;padding:14px;overflow:hidden;transition:transform var(--transition),box-shadow var(--transition);
+  border:1px solid rgba(255,255,255,0.03);
+}
+.card:hover{transform:translateY(-8px);box-shadow:0 18px 40px rgba(2,6,23,0.6)}
+.card .thumb{width:100%;height:180px;border-radius:10px;overflow:hidden;background:#0f0f12;display:flex;align-items:center;justify-content:center}
+.card img{width:100%;height:100%;object-fit:cover;display:block}
+.card h3{margin:12px 0 6px 0;font-size:18px}
+.card p{margin:0;color:var(--muted);font-size:14px}
+.card .price{display:block;margin-top:10px;font-weight:700;color:var(--accent)}
+
+/* skeleton */
+.skeleton{
+  background:linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,255,255,0.06), rgba(255,255,255,0.03));
+  border-radius:8px;min-height:180px;animation:shimmer 1.2s linear infinite;
+}
+@keyframes shimmer{0%{background-position:-200px 0}100%{background-position:200px 0}}
+
+/* empty state */
+.empty{
+  text-align:center;padding:40px;border-radius:12px;background:var(--glass-2);color:var(--muted);
+  border:1px dashed rgba(255,255,255,0.03)
+}
+
+/* footer */
+.site-footer{text-align:center;margin-top:28px;color:var(--muted);font-size:13px}
+
+/* responsive tweaks */
+@media (max-width:720px){
+  header#hero{height:46vh}
+  .card .thumb{height:150px}
+  .section-header{flex-direction:column;align-items:flex-start;gap:10px}
+}
