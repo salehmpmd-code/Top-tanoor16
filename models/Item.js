@@ -1,9 +1,7 @@
-
-const mongoose = require('mongoose');
-module.exports = mongoose.model('Item', new mongoose.Schema({
-  name:String,
-  description:String,
-  price:Number,
-  image:String,
-  section:{type:mongoose.Schema.Types.ObjectId,ref:'Section'}
-}));
+const body = {
+  name: qs('#newTitle').value,
+  description: qs('#newDesc').value,
+  price: Number(qs('#newPrice').value) || 0,
+  image: qs('#newImage').value,
+  section: qs('#newSection').value
+};
