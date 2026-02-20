@@ -1,250 +1,84 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>کافه تاپ تنور</title>
-
-  <!-- ===========================
-       1. STYLE
-       =========================== -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>سایت منوی حرفه‌ای</title>
   <style>
-    /* متغیرهای تم */
-    :root{
-      --bg:#0f1720;
-      --card:#0f1728;
-      --muted:#9aa4b2;
-      --text:#e6eef6;
-      --primary:#ff6b35;
-      --secondary:#ffd166;
-      --glass: rgba(255,255,255,0.04);
-      --radius:12px;
-      --shadow: 0 6px 18px rgba(2,6,23,0.6);
-      --speed: 300ms;
-      --accent-glow: 0 6px 30px rgba(255,107,53,0.12);
-    }
-
-    html.light{
-      --bg:#f7f9fb;
-      --card:#ffffff;
-      --muted:#6b7280;
-      --text:#0b1220;
-      --primary:#ff6b35;
-      --secondary:#ffb86b;
-      --glass: rgba(255,255,255,0.6);
-      --shadow: 0 8px 24px rgba(12,20,30,0.06);
-      --accent-glow: 0 6px 30px rgba(255,107,53,0.08);
-    }
-
-    /* پایه */
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      font-family: "Vazirmatn", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-      background:linear-gradient(180deg,var(--bg), #07101a 120%);
-      color:var(--text);
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
-      scroll-behavior:smooth;
-    }
-
-    a{color:inherit;text-decoration:none}
-    img{max-width:100%;display:block}
-
-    /* کانتینر */
-    .container{
-      width:min(1200px,94%);
-      margin:0 auto;
-      padding:28px 0;
-    }
-
-    /* هدر */
-    header{
-      position:fixed;
-      top:18px;
-      left:18px;
-      right:18px;
-      z-index:1200;
-      transition:all var(--speed) ease;
-      backdrop-filter: blur(6px);
-      border-radius:14px;
-      box-shadow:var(--shadow);
-      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-      padding:12px 18px;
-      display:flex;
-      align-items:center;
-      gap:12px;
-    }
-    header.shrink{ padding:8px 14px; transform:translateY(-6px) scale(0.995); }
-
-    .logo{
-      width:48px;height:48px;border-radius:10px;
-      background:linear-gradient(135deg,var(--primary),var(--secondary));
-      display:flex;align-items:center;justify-content:center;
-      font-weight:800;color:#fff;font-size:18px;flex:0 0 48px;
-      box-shadow:var(--accent-glow);
-    }
-    .brand{
-      display:flex;flex-direction:column;line-height:1;
-    }
-    .brand .title{font-weight:700;font-size:15px}
-    .brand .tag{font-size:12px;color:var(--muted)}
-
-    nav.nav{
-      margin-inline-start:auto;
-      display:flex;gap:14px;align-items:center;
-    }
-    nav.nav a{padding:8px 10px;border-radius:8px;font-size:14px;color:var(--muted)}
-    nav.nav a.active{background:var(--glass);color:var(--text);box-shadow:var(--accent-glow)}
-
-    .header-actions{display:flex;gap:8px;align-items:center;margin-inline-start:12px}
-    .btn{
-      background:transparent;border:1px solid rgba(255,255,255,0.04);
-      color:var(--text);padding:8px 12px;border-radius:10px;cursor:pointer;
-      transition:all 180ms ease;
-    }
-    .btn:hover{transform:translateY(-3px);box-shadow:var(--accent-glow)}
-    .icon-btn{width:44px;height:44px;display:inline-flex;align-items:center;justify-content:center}
-
-    /* هیرو */
-    .hero{
-      margin-top:110px;
-      display:grid;grid-template-columns:1fr 420px;gap:28px;align-items:center;
-      padding:36px 0;
-    }
-    .hero-left h1{font-size:40px;margin:0 0 12px}
-    .hero-left p{color:var(--muted);margin:0 0 18px}
-    .hero-actions{display:flex;gap:12px}
-    .cta{background:var(--primary);color:#fff;padding:12px 18px;border-radius:12px;font-weight:700}
-    .ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:10px 14px;border-radius:12px;color:var(--text)}
-
-    .hero-cards{display:grid;grid-template-columns:repeat(1,1fr);gap:12px;margin-top:18px}
-    .info-card{background:var(--card);padding:12px;border-radius:12px;box-shadow:var(--shadow);display:flex;gap:12px;align-items:center}
-    .info-card .icon{width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,var(--secondary),var(--primary));display:flex;align-items:center;justify-content:center;color:#111;font-weight:700}
-
-    /* اسلایدر هدر */
-    .hero-slider{position:relative;border-radius:16px;overflow:hidden;box-shadow:var(--shadow)}
-    .hero-slide{width:100%;height:320px;display:flex;align-items:center;justify-content:center;background-size:cover;background-position:center;transition:opacity 600ms ease;opacity:0}
-    .hero-slide.active{opacity:1}
-    .slider-dots{position:absolute;left:12px;bottom:12px;display:flex;gap:8px}
-    .dot{width:10px;height:10px;border-radius:50%;background:rgba(0,0,0,0.3);cursor:pointer}
-    .dot.active{background:var(--primary);box-shadow:var(--accent-glow)}
-
-    /* toolbar */
-    .toolbar{display:flex;gap:12px;align-items:center;margin:18px 0}
-    .filters{display:flex;gap:8px;flex-wrap:wrap}
-    .filters button{padding:8px 12px;border-radius:999px;border:0;background:var(--glass);color:var(--text);cursor:pointer}
-    .filters button.active{background:var(--primary);color:#111}
-
-    .search{
-      margin-inline-start:auto;display:flex;align-items:center;gap:8px;background:var(--card);padding:8px;border-radius:12px;border:1px solid rgba(255,255,255,0.02)
-    }
-    .search input{background:transparent;border:0;color:var(--text);outline:none;width:220px}
-
-    /* گرید کارت‌ها */
-    .sections{margin-top:18px;display:grid;gap:28px}
-    .section{padding:8px 0}
-    .section h2{margin:0 0 12px}
-    .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-    .card{
-      background:linear-gradient(180deg,var(--card), rgba(255,255,255,0.01));
-      border-radius:14px;padding:12px;box-shadow:var(--shadow);transition:transform 220ms ease, box-shadow 220ms ease;
-      display:flex;flex-direction:column;gap:8px;cursor:default;
-    }
-    .card:hover{transform:translateY(-8px);box-shadow:var(--accent-glow)}
-    .thumb{height:160px;border-radius:10px;overflow:hidden;background:#0b1220}
-    .meta{display:flex;justify-content:space-between;align-items:center}
-    .title{font-weight:700}
-    .price{font-weight:800;color:var(--primary)}
-    .tags{display:flex;gap:6px}
-    .tag{background:rgba(255,255,255,0.04);padding:6px 8px;border-radius:999px;font-size:12px;color:var(--muted)}
-
-    .card-actions{display:flex;gap:8px;margin-top:auto}
-    .btn-outline{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:8px 10px;border-radius:10px;color:var(--text)}
-
-    /* مودال */
-    .modal-backdrop{position:fixed;inset:0;background:rgba(2,6,23,0.6);display:none;align-items:center;justify-content:center;z-index:1400}
-    .modal-backdrop.open{display:flex}
-    .modal{width:min(760px,94%);background:var(--card);padding:18px;border-radius:14px;box-shadow:var(--shadow)}
-    .modal .close{margin-left:auto}
-
-    /* drawer موبایل */
-    .drawer{position:fixed;top:0;bottom:0;right:-320px;width:320px;background:var(--card);z-index:1500;padding:18px;box-shadow:var(--shadow);transition:right 300ms ease}
-    .drawer.open{right:0}
-    .drawer .close{display:block;margin-bottom:12px}
-
-    /* بازگشت به بالا */
-    .to-top{position:fixed;left:18px;bottom:18px;width:48px;height:48px;border-radius:12px;background:var(--primary);display:flex;align-items:center;justify-content:center;color:#fff;cursor:pointer;box-shadow:var(--accent-glow);opacity:0;transform:translateY(20px);transition:all 220ms ease;z-index:1600}
-    .to-top.show{opacity:1;transform:translateY(0)}
-
-    /* فوتر */
-    footer{padding:36px 0;color:var(--muted);text-align:center;margin-top:36px}
-
-    /* ریسپانسیو */
-    @media (max-width:980px){
-      .hero{grid-template-columns:1fr;gap:18px;margin-top:90px}
-      .cards{grid-template-columns:repeat(2,1fr)}
-      nav.nav{display:none}
-      header{left:12px;right:12px}
-    }
-    @media (max-width:640px){
-      .cards{grid-template-columns:1fr}
-      .hero-slide{height:220px}
-      .search input{width:120px}
-    }
-
-    /* انیمیشن ظاهر شدن سکشن */
-    .reveal{opacity:0;transform:translateY(12px);transition:opacity 600ms ease, transform 600ms ease}
-    .reveal.visible{opacity:1;transform:none}
+    body { font-family: 'Tahoma', sans-serif; margin:0; padding:0; background:#f8f8f8; color:#333; }
+    header { background:#fff; padding:10px 20px; box-shadow:0 2px 5px rgba(0,0,0,0.1); }
+    header h1 { margin:0; font-size:24px; display:inline-block; }
+    header a { float:left; text-decoration:none; color:#007BFF; font-weight:bold; }
+    .hero { display:flex; overflow-x:auto; gap:10px; padding:10px; }
+    .hero img { height:200px; border-radius:8px; flex-shrink:0; }
+    .items { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:15px; padding:15px; }
+    .item { background:#fff; padding:10px; border-radius:8px; box-shadow:0 2px 5px rgba(0,0,0,0.1); }
+    .item img { width:100%; height:120px; object-fit:cover; border-radius:5px; }
+    .item h3 { margin:5px 0; font-size:18px; }
+    .item p { font-size:14px; color:#666; }
+    .item .price { font-weight:bold; color:#222; margin-top:5px; }
   </style>
 </head>
 <body>
-  <!-- ===========================
-       2. BODY
-       =========================== -->
-
-  <!-- هدر -->
-  <header id="siteHeader" role="banner" aria-label="هدر سایت">
-    <div class="logo" aria-hidden="true">TT</div>
-    <div class="brand" aria-hidden="false">
-      <div class="title">کافه تاپ تنور</div>
-      <div class="tag">طعم، فضا، تجربه‌ای که می‌ماند</div>
-    </div>
-
-    <nav class="nav" role="navigation" aria-label="منوی اصلی">
-      <a href="#dessert" data-target="dessert">دسر</a>
-      <a href="#fastfood" data-target="fastfood">فست‌فود</a>
-      <a href="#hot" data-target="hot">نوشیدنی گرم</a>
-      <a href="#cold" data-target="cold">نوشیدنی سرد</a>
-      <a href="#info" data-target="info">اطلاعات</a>
-    </nav>
-
-    <div class="header-actions">
-      <button class="btn icon-btn" id="filterToggle" aria-label="فیلتر">فیلتر</button>
-      <button class="btn icon-btn" id="themeToggle" aria-label="تغییر تم">🌙</button>
-      <button class="btn icon-btn" id="menuToggle" aria-label="منوی موبایل">☰</button>
-    </div>
+  <header>
+    <h1 id="siteTitle">منوی من</h1>
+    <a href="admin.html">مدیریت</a>
   </header>
 
-  <!-- کانتینر اصلی -->
-  <main class="container" id="mainContent">
-    <!-- هیرو -->
-    <section class="hero" aria-labelledby="heroTitle">
-      <div class="hero-left">
-        <h1 id="heroTitle">کافه تاپ تنور</h1>
-        <p id="heroSubtitle">قهوه تخصصی، محیط دلنشین و تجربه‌ای که می‌ماند. منوی ما را ببینید و سفارش دهید.</p>
-        <div class="hero-actions">
-          <a class="cta" href="#menu">مشاهده منو</a>
-          <a class="ghost" href="#info">تماس و اطلاعات</a>
-        </div>
+  <section class="hero" id="heroImages"></section>
+  <section class="items" id="itemList"></section>
 
-        <div class="hero-cards" aria-hidden="false">
-          <div class="info-card">
-            <div class="icon">⏰</div>
-            <div>
-              <div style="font-weight:700">ساعات کاری</div>
-              <div class="muted">۸ صبح تا ۱۱ شب</div>
+  <script>
+    async function fetchSettings() {
+      const res = await fetch('/api/settings');
+      if(res.ok) return res.json();
+      return {};
+    }
+
+    async function fetchItems() {
+      const res = await fetch('/api/items');
+      if(res.ok) return res.json();
+      return [];
+    }
+
+    function renderHero(images) {
+      const container = document.getElementById('heroImages');
+      container.innerHTML = '';
+      images.forEach(url => {
+        const img = document.createElement('img');
+        img.src = url;
+        container.appendChild(img);
+      });
+    }
+
+    function renderItems(items) {
+      const container = document.getElementById('itemList');
+      container.innerHTML = '';
+      items.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'item';
+        div.innerHTML = `
+          <img src="${item.image}" alt="${item.name}">
+          <h3>${item.name}</h3>
+          <p>${item.description}</p>
+          <div class="price">${item.price} تومان</div>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    async function init() {
+      const settings = await fetchSettings();
+      document.getElementById('siteTitle').textContent = settings.siteTitle || 'منوی من';
+      renderHero(settings.heroImages || []);
+      const items = await fetchItems();
+      renderItems(items);
+    }
+
+    init();
+  </script>
+</body>
+</html>       <div class="muted">۸ صبح تا ۱۱ شب</div>
             </div>
           </div>
           <div class="info-card">
