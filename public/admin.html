@@ -1,294 +1,197 @@
-
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>پنل مدیریت — کافه تاپ تنور</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>پنل مدیریت</title>
   <style>
-    :root{
-      --bg:#0b1220;--card:#0f1728;--text:#e6eef6;--muted:#9aa4b2;--primary:#ff6b35;
-      --radius:10px;--shadow:0 8px 24px rgba(2,6,23,0.6);
-    }
-    html.light{--bg:#f7f9fb;--card:#fff;--text:#0b1220;--muted:#6b7280}
-    *{box-sizing:border-box} body{margin:0;font-family:Vazirmatn,system-ui;background:var(--bg);color:var(--text);min-height:100vh;padding:20px}
-    .wrap{width:min(1100px,96%);margin:0 auto}
-    header{display:flex;align-items:center;gap:12px;margin-bottom:18px}
-    .logo{width:48px;height:48px;border-radius:8px;background:linear-gradient(135deg,var(--primary),#ffd166);display:flex;align-items:center;justify-content:center;font-weight:800;color:#111}
-    h1{margin:0;font-size:18px}
-    .grid{display:grid;grid-template-columns:320px 1fr;gap:18px}
-    .card{background:var(--card);padding:14px;border-radius:var(--radius);box-shadow:var(--shadow)}
-    .muted{color:var(--muted);font-size:13px}
-    label{display:block;margin-top:10px;font-size:13px}
-    input[type="text"], input[type="password"], textarea, select{width:100%;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:var(--text)}
-    button{background:var(--primary);border:0;color:#111;padding:8px 12px;border-radius:8px;cursor:pointer;margin-top:10px}
-    .small-btn{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--text);padding:6px 8px;border-radius:8px;cursor:pointer}
-    .list{margin-top:12px;display:flex;flex-direction:column;gap:8px;max-height:420px;overflow:auto}
-    .item-row{display:flex;gap:8px;align-items:center;justify-content:space-between;padding:8px;border-radius:8px;background:rgba(255,255,255,0.02)}
-    .thumb{width:64px;height:48px;border-radius:6px;background:#07101a;flex:0 0 64px;background-size:cover;background-position:center}
-    .row-actions{display:flex;gap:6px}
-    .note{font-size:13px;color:var(--muted);margin-top:8px}
-    .full-width{width:100%}
-    @media (max-width:900px){ .grid{grid-template-columns:1fr} .thumb{width:48px;height:36px} }
+    body { font-family: 'Tahoma', sans-serif; margin:0; padding:0; background:#f0f2f5; color:#333; }
+    header { background:#007BFF; color:#fff; padding:10px 20px; text-align:center; font-size:20px; }
+    section { padding:15px; }
+    input, select, textarea { width:100%; padding:8px; margin:5px 0; border:1px solid #ccc; border-radius:5px; }
+    button { padding:8px 12px; border:none; border-radius:5px; background:#007BFF; color:#fff; cursor:pointer; margin-top:5px; }
+    button.delete { background:#dc3545; }
+    .card { background:#fff; padding:10px; margin-bottom:10px; border-radius:8px; box-shadow:0 2px 5px rgba(0,0,0,0.1); }
+    .flex { display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+    .flex input { flex:1; }
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <header>
-      <div class="logo">TT</div>
-      <div>
-        <h1>پنل مدیریت — کافه تاپ تنور</h1>
-        <div class="muted">ورود مدیر، آپلود هدر، ویرایش متن‌ها و مدیریت آیتم‌ها</div>
-      </div>
-    </header>
+  <header>پنل مدیریت</header>
 
-    <div id="loginCard" class="card" aria-live="polite">
-      <h3>ورود مدیر</h3>
-      <div class="muted">برای ورود از نام کاربری و رمز عبور استفاده کن</div>
-      <label>نام کاربری</label>
-      <input id="username" type="text" value="admin" />
-      <label>رمز عبور</label>
-      <input id="password" type="password" value="1234" />
-      <button id="loginBtn">ورود</button>
-      <div id="loginMsg" class="note"></div>
+  <section id="loginSection">
+    <h2>ورود مدیر</h2>
+    <input type="text" id="username" placeholder="نام کاربری">
+    <input type="password" id="password" placeholder="رمز عبور">
+    <button onclick="login()">ورود</button>
+    <div id="loginMsg" style="color:red;"></div>
+  </section>
+
+  <section id="mainPanel" style="display:none;">
+    <h2>تنظیمات سایت</h2>
+    <input type="text" id="siteTitleInput" placeholder="عنوان سایت">
+    <input type="text" id="subtitleInput" placeholder="زیرعنوان">
+    <textarea id="aboutTextInput" placeholder="درباره سایت"></textarea>
+    <button onclick="saveSettings()">ذخیره تنظیمات</button>
+
+    <h2>تصاویر هدر</h2>
+    <input type="file" id="headerFile">
+    <button onclick="uploadHeader()">آپلود تصویر</button>
+    <div id="heroList"></div>
+
+    <h2>آیتم‌ها</h2>
+    <div class="card">
+      <input type="text" id="newName" placeholder="نام آیتم">
+      <textarea id="newDesc" placeholder="توضیحات"></textarea>
+      <input type="number" id="newPrice" placeholder="قیمت">
+      <input type="text" id="newImage" placeholder="آدرس تصویر">
+      <input type="text" id="newSection" placeholder="دسته‌بندی">
+      <button onclick="addItem()">افزودن آیتم</button>
     </div>
+    <div id="itemCards"></div>
+  </section>
 
-    <div id="mainArea" style="display:none;margin-top:18px">
-      <div class="grid">
-        <!-- ستون چپ -->
-        <div>
-          <div class="card">
-            <h3>تنظیمات سایت</h3>
-            <label>عنوان سایت</label>
-            <input id="siteTitle" type="text" />
-            <label>زیرعنوان</label>
-            <input id="subtitle" type="text" />
-            <label>متن درباره ما</label>
-            <textarea id="aboutText" rows="4"></textarea>
-            <button id="saveSettings">ذخیره تنظیمات</button>
-            <div id="settingsMsg" class="note"></div>
-          </div>
+<script>
+let token = localStorage.getItem('jwt') || '';
 
-          <div class="card" style="margin-top:12px">
-            <h3>آپلود تصویر هدر</h3>
-            <input id="headerFile" type="file" accept="image/*" />
-            <button id="uploadHeader" class="full-width">آپلود و اضافه به هدر</button>
-            <div id="uploadMsg" class="note"></div>
-            <div style="margin-top:10px">
-              <h4>تصاویر هدر فعلی</h4>
-              <div id="heroList" class="list"></div>
-            </div>
-          </div>
-        </div>
+async function login() {
+  const res = await fetch('/api/auth/login', {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ username: qs('#username').value, password: qs('#password').value })
+  });
+  if(res.ok){
+    const data = await res.json();
+    token = data.token;
+    localStorage.setItem('jwt', token);
+    document.getElementById('loginSection').style.display='none';
+    document.getElementById('mainPanel').style.display='block';
+    loadSettings();
+    loadItems();
+  } else {
+    document.getElementById('loginMsg').textContent='خطا در ورود';
+  }
+}
 
-        <!-- ستون راست -->
-        <div>
-          <div class="card">
-            <h3>مدیریت آیتم‌ها</h3>
-            <div style="display:flex;gap:8px">
-              <input id="newTitle" placeholder="عنوان" />
-              <input id="newPrice" placeholder="قیمت" />
-            </div>
-            <input id="newDesc" placeholder="توضیحات" style="margin-top:8px" />
-            <input id="newImage" placeholder="آدرس تصویر (یا آپلود از هدر)" style="margin-top:8px" />
-            <div style="display:flex;gap:8px">
-              <select id="newSection">
-                <option value="dessert">دسر</option>
-                <option value="fastfood">فست‌فود</option>
-                <option value="hot">نوشیدنی گرم</option>
-                <option value="cold">نوشیدنی سرد</option>
-              </select>
-              <button id="addItem">افزودن آیتم</button>
-            </div>
-            <div class="note">برای ویرایش روی دکمه ویرایش هر آیتم کلیک کن</div>
-          </div>
+function qs(id){ return document.getElementById(id); }
 
-          <div class="card" style="margin-top:12px">
-            <h3>فهرست آیتم‌ها</h3>
-            <div id="itemsList" class="list"></div>
-          </div>
-        </div>
-      </div>
-    </div>
+async function fetchWithAuth(url, options={}) {
+  options.headers = options.headers || {};
+  options.headers['Authorization'] = 'Bearer '+token;
+  return fetch(url, options);
+}
 
-    <div id="debug" style="margin-top:12px;color:var(--muted);font-size:13px"></div>
-  </div>
+// Settings
+async function loadSettings(){
+  const res = await fetch('/api/settings');
+  if(res.ok){
+    const s = await res.json();
+    qs('siteTitleInput').value = s.siteTitle || '';
+    qs('subtitleInput').value = s.subtitle || '';
+    qs('aboutTextInput').value = s.aboutText || '';
+    renderHeroList(s.heroImages || []);
+  }
+}
 
-  <script>
-    const api = { auth:'/api/auth/login', settings:'/api/settings', items:'/api/items', upload:'/api/upload' };
-    let TOKEN = localStorage.getItem('token') || null;
+async function saveSettings(){
+  const res = await fetchWithAuth('/api/settings', {
+    method:'PUT',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({
+      siteTitle: qs('siteTitleInput').value,
+      subtitle: qs('subtitleInput').value,
+      aboutText: qs('aboutTextInput').value
+    })
+  });
+  if(res.ok) alert('ذخیره شد');
+}
 
-    const qs = s => document.querySelector(s);
-    const qsa = s => Array.from(document.querySelectorAll(s));
+// Hero
+function renderHeroList(images){
+  const container = qs('heroList');
+  container.innerHTML='';
+  images.forEach((url,i)=>{
+    const div=document.createElement('div');
+    div.className='flex card';
+    div.innerHTML=`<span>${url}</span><button class="delete" onclick="deleteHero('${url}')">حذف</button>`;
+    container.appendChild(div);
+  });
+}
 
-    // نمایش/مخفی کردن بر اساس لاگین
-    function showMain(){ qs('#loginCard').style.display='none'; qs('#mainArea').style.display='block'; loadAll(); }
-    function showLogin(){ qs('#loginCard').style.display='block'; qs('#mainArea').style.display='none'; }
+async function uploadHeader(){
+  const file = qs('headerFile').files[0];
+  if(!file) return alert('فایل انتخاب نشده');
+  const fd = new FormData();
+  fd.append('file', file);
+  const res = await fetchWithAuth('/api/upload', { method:'POST', body: fd });
+  if(res.ok){
+    alert('آپلود شد');
+    loadSettings();
+  }
+}
 
-    // لاگین
-    qs('#loginBtn').addEventListener('click', async ()=>{
-      const u = qs('#username').value.trim();
-      const p = qs('#password').value.trim();
-      qs('#loginMsg').textContent = 'در حال ورود...';
-      try{
-        const res = await fetch(api.auth, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ username:u, password:p }) });
-        if(!res.ok) throw new Error('نامعتبر');
-        const data = await res.json();
-        TOKEN = data.token;
-        localStorage.setItem('token', TOKEN);
-        qs('#loginMsg').textContent = 'ورود موفق';
-        showMain();
-      }catch(e){
-        qs('#loginMsg').textContent = 'ورود ناموفق';
-      }
+async function deleteHero(url){
+  if(!confirm('مطمئن هستید؟')) return;
+  const res = await fetchWithAuth('/api/upload', {
+    method:'DELETE',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ url })
+  });
+  if(res.ok) loadSettings();
+}
+
+// Items
+async function loadItems(){
+  const res = await fetchWithAuth('/api/items');
+  if(res.ok){
+    const items = await res.json();
+    const container = qs('itemCards');
+    container.innerHTML='';
+    items.forEach(item=>{
+      const div=document.createElement('div');
+      div.className='card flex';
+      div.innerHTML=`
+        <input value="${item.name}" onchange="updateItem('${item._id}', this.value, null,null,null,null)">
+        <input value="${item.description}" onchange="updateItem('${item._id}', null, this.value,null,null,null)">
+        <input type="number" value="${item.price}" onchange="updateItem('${item._id}', null,null,Number(this.value),null,null)">
+        <input value="${item.image}" onchange="updateItem('${item._id}', null,null,null,this.value,null)">
+        <input value="${item.section}" onchange="updateItem('${item._id}', null,null,null,null,this.value)">
+        <button class="delete" onclick="removeItem('${item._id}')">حذف</button>
+      `;
+      container.appendChild(div);
     });
+  }
+}
 
-    // بارگذاری تنظیمات و آیتم‌ها
-    async function loadAll(){
-      await loadSettings();
-      await loadItems();
-    }
+async function addItem(){
+  const name = qs('newName').value.trim();
+  const desc = qs('newDesc').value.trim();
+  const price = Number(qs('newPrice').value) || 0;
+  const image = qs('newImage').value.trim();
+  const section = qs('newSection').value.trim();
+  const res = await fetchWithAuth('/api/items',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ name, description:desc, price, image, section })
+  });
+  if(res.ok){ loadItems(); qs('newName').value=''; qs('newDesc').value=''; qs('newPrice').value=''; qs('newImage').value=''; qs('newSection').value=''; }
+}
 
-    async function loadSettings(){
-      try{
-        const res = await fetch(api.settings);
-        const s = await res.json();
-        qs('#siteTitle').value = s.siteTitle || '';
-        qs('#subtitle').value = s.subtitle || '';
-        qs('#aboutText').value = s.aboutText || '';
-        renderHeroList(s.heroImages || []);
-      }catch(e){ console.warn(e); }
-    }
+async function updateItem(id,name,desc,price,image,section){
+  const payload = {};
+  if(name!==null) payload.name=name;
+  if(desc!==null) payload.description=desc;
+  if(price!==null) payload.price=price;
+  if(image!==null) payload.image=image;
+  if(section!==null) payload.section=section;
+  await fetchWithAuth('/api/items/'+id,{ method:'PUT', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload) });
+}
 
-    async function saveSettings(){
-      const body = { siteTitle: qs('#siteTitle').value, subtitle: qs('#subtitle').value, aboutText: qs('#aboutText').value };
-      try{
-        const res = await fetch(api.settings, { method:'PUT', headers:{ 'Content-Type':'application/json', 'Authorization': TOKEN }, body: JSON.stringify(body) });
-        if(!res.ok) throw new Error('خطا');
-        qs('#settingsMsg').textContent = 'ذخیره شد';
-        setTimeout(()=>qs('#settingsMsg').textContent='',2000);
-      }catch(e){ qs('#settingsMsg').textContent = 'خطا در ذخیره'; }
-    }
-    qs('#saveSettings').addEventListener('click', saveSettings);
-
-    // آپلود هدر
-    async function uploadHeader(){
-      const f = qs('#headerFile').files[0];
-      if(!f){ qs('#uploadMsg').textContent='فایلی انتخاب نشده'; return; }
-      qs('#uploadMsg').textContent = 'در حال آپلود...';
-      try{
-        const fd = new FormData(); fd.append('image', f);
-        const res = await fetch(api.upload, { method:'POST', headers: { 'Authorization': TOKEN }, body: fd });
-        if(!res.ok) throw new Error('upload failed');
-        const data = await res.json();
-        // حالا باید URL را به settings اضافه کنیم
-        await addHeroImageToSettings(data.url);
-        qs('#uploadMsg').textContent = 'آپلود و اضافه شد';
-        await loadSettings();
-      }catch(e){ qs('#uploadMsg').textContent = 'خطا در آپلود'; console.error(e); }
-    }
-    qs('#uploadHeader').addEventListener('click', uploadHeader);
-
-    async function addHeroImageToSettings(url){
-      try{
-        // دریافت فعلی
-        const res1 = await fetch(api.settings);
-        const s = await res1.json();
-        const images = s.heroImages || [];
-        images.push(url);
-        // ذخیره با PUT
-        await fetch(api.settings, { method:'PUT', headers:{ 'Content-Type':'application/json', 'Authorization': TOKEN }, body: JSON.stringify({ heroImages: images, siteTitle: s.siteTitle, subtitle: s.subtitle, aboutText: s.aboutText }) });
-      }catch(e){ console.error(e); throw e; }
-    }
-
-    function renderHeroList(images){
-      const el = qs('#heroList'); el.innerHTML = '';
-      images.forEach((u,i)=>{
-        const row = document.createElement('div'); row.className='item-row';
-        row.innerHTML = `<div style="display:flex;gap:8px;align-items:center"><div class="thumb" style="background-image:url('${u}')"></div><div style="min-width:0"><div style="font-weight:700">هدر ${i+1}</div><div class="muted" style="font-size:12px">${u}</div></div></div>
-          <div class="row-actions"><button class="small-btn" data-i="${i}" data-url="${u}" onclick="removeHero(this)">حذف</button></div>`;
-        el.appendChild(row);
-      });
-    }
-
-    async function removeHero(btn){
-      const url = btn.dataset.url;
-      try{
-        const res = await fetch(api.settings);
-        const s = await res.json();
-        const images = (s.heroImages || []).filter(x=>x!==url);
-        await fetch(api.settings, { method:'PUT', headers:{ 'Content-Type':'application/json', 'Authorization': TOKEN }, body: JSON.stringify({ heroImages: images, siteTitle: s.siteTitle, subtitle: s.subtitle, aboutText: s.aboutText }) });
-        await loadSettings();
-      }catch(e){ console.error(e); }
-    }
-
-    // مدیریت آیتم‌ها
-    async function loadItems(){
-      try{
-        const res = await fetch(api.items);
-        const items = await res.json();
-        renderItems(items);
-      }catch(e){ console.warn(e); }
-    }
-
-    function renderItems(items){
-      const el = qs('#itemsList'); el.innerHTML = '';
-      items.forEach(it=>{
-        const row = document.createElement('div'); row.className='item-row';
-        row.innerHTML = `<div style="display:flex;gap:8px;align-items:center"><div class="thumb" style="background-image:url('${it.image||''}')"></div>
-          <div style="min-width:0"><div style="font-weight:700">${it.title}</div><div class="muted">${it.price||0} تومان</div></div></div>
-          <div class="row-actions">
-            <button class="small-btn" onclick='editItem("${it._id}")'>ویرایش</button>
-            <button class="small-btn" onclick='deleteItem("${it._id}")'>حذف</button>
-          </div>`;
-        el.appendChild(row);
-      });
-    }
-
-    async function addItem(){
-      const body = { title: qs('#newTitle').value, description: qs('#newDesc').value, price: Number(qs('#newPrice').value||0), image: qs('#newImage').value, section: qs('#newSection').value };
-      try{
-        const res = await fetch(api.items, { method:'POST', headers:{ 'Content-Type':'application/json', 'Authorization': TOKEN }, body: JSON.stringify(body) });
-        if(!res.ok) throw new Error('err');
-        qs('#newTitle').value=''; qs('#newDesc').value=''; qs('#newPrice').value=''; qs('#newImage').value='';
-        await loadItems();
-      }catch(e){ console.error(e); alert('خطا در افزودن آیتم'); }
-    }
-    qs('#addItem').addEventListener('click', addItem);
-
-    async function deleteItem(id){
-      if(!confirm('آیا مطمئن هستید؟')) return;
-      try{
-        await fetch(api.items + '/' + id, { method:'DELETE', headers:{ 'Authorization': TOKEN } });
-        await loadItems();
-      }catch(e){ console.error(e); alert('خطا در حذف'); }
-    }
-
-    async function editItem(id){
-      try{
-        const res = await fetch(api.items + '/' + id);
-        const it = await res.json();
-        const newTitle = prompt('عنوان', it.title) || it.title;
-        const newDesc = prompt('توضیحات', it.description||'') || it.description;
-        const newPrice = prompt('قیمت', it.price||0);
-        const body = { title:newTitle, description:newDesc, price: Number(newPrice||0), image: it.image, section: it.section };
-        await fetch(api.items + '/' + id, { method:'PUT', headers:{ 'Content-Type':'application/json', 'Authorization': TOKEN }, body: JSON.stringify(body) });
-        await loadItems();
-      }catch(e){ console.error(e); alert('خطا در ویرایش'); }
-    }
-
-    // اگر توکن موجود است، مستقیم وارد شو
-    if(TOKEN) showMain(); else showLogin();
-
-    // کمک‌کننده برای نمایش لاگ
-    function dbg(msg){ qs('#debug').textContent = msg; }
-
-    // تابع‌های سراسری برای دکمه‌های ساخته‌شده در HTML
-    window.removeHero = removeHero;
-    window.editItem = editItem;
-    window.deleteItem = deleteItem;
-
-  </script>
+async function removeItem(id){
+  if(!confirm('آیا مطمئن هستید؟')) return;
+  await fetchWithAuth('/api/items/'+id,{ method:'DELETE' });
+  loadItems();
+}
+</script>
 </body>
 </html>
-Add admin panel
